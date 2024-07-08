@@ -5,6 +5,8 @@ import json
 
 from inflection import parameterize, underscore
 
+TYPES = ['First Tier', 'Second Tier', 'Third Tier', 'Fourth Tier', 'Fifth Tier', 'Sixth Tier']
+
 class CompetitionsSpider(BaseSpider):
 
   name = 'competitions'
@@ -113,11 +115,7 @@ class CompetitionsSpider(BaseSpider):
 
     for idx, row in enumerate(box_rows):
       tier = row.xpath('td/text()').get()
-      if tier in [
-        'First Tier',
-        'Domestic Cup',
-        'Domestic Super Cup'
-      ]:
+      if tier in TYPES:
         parameterized_tier = underscore(parameterize(tier))
         competition_row = box_rows[idx + 1]
         competition_href = competition_row.xpath('td/table//td')[1].xpath('a/@href').get()

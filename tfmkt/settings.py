@@ -25,8 +25,11 @@ LOG_LEVEL = 'ERROR'
 
 # HttpCacheMiddleware settings
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html#httpcache-middleware-settings
-HTTPCACHE_ENABLED = True
+HTTPCACHE_ENABLED = False
 HTTPCACHE_DIR = 'httpcache'
+
 
 # https://docs.scrapy.org/en/latest/topics/request-response.html?highlight=REQUEST_FINGERPRINTER_IMPLEMENTATION#std-setting-REQUEST_FINGERPRINTER_IMPLEMENTATION
 REQUEST_FINGERPRINTER_IMPLEMENTATION = '2.7'
+
+USER_AGENT = 'USER_AGENT="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"'
