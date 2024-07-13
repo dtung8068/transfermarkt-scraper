@@ -54,8 +54,8 @@ class PlayersSpider(BaseSpider):
     # uncommenting the two lines below will open a scrapy shell with the context of this request
     # when you run the crawler. this is useful for developing new extractors
 
-    # inspect_response(response, self)
-    # exit(1)
+    #inspect_response(response, self)
+    #exit(1)
 
     # parse 'PLAYER DATA' section
 
@@ -67,7 +67,7 @@ class PlayersSpider(BaseSpider):
     attributes["number"] = self.safe_strip(name_element.xpath("span/text()").get())
 
     attributes['name_in_home_country'] = response.xpath("//span[text()='Name in home country:']/following::span[1]/text()").get()
-    attributes['date_of_birth'] = response.xpath("//span[@itemprop='birthDate']/text()").get().strip().split(" (")[0]
+    attributes['date_of_birth'] = response.xpath("//span[text()='Date of birth/Age:']/following::span[1]/a/text()").get().split('(')[0].rstrip()
     attributes['place_of_birth'] = {
       'country': response.xpath("//span[text()='Place of birth:']/following::span[1]/span/img/@title").get(),
       'city': response.xpath("//span[text()='Place of birth:']/following::span[1]/span/text()").get()
@@ -90,13 +90,13 @@ class PlayersSpider(BaseSpider):
     attributes['day_of_last_contract_extension'] = response.xpath("//span[text()='Date of last contract extension:']/following::span[1]/text()").get()
     attributes['outfitter'] = response.xpath("//span[text()='Outfitter:']/following::span[1]/text()").get()
 
-    current_market_value_text = self.safe_strip(response.xpath("//div[@class='tm-player-market-value-development__current-value']/text()").get())
-    current_market_value_link = self.safe_strip(response.xpath("//div[@class='tm-player-market-value-development__current-value']/a/text()").get())
+    current_market_value_text = self.safe_strip(response.xpath("//div[@class='current-value svelte-18lvpom']/text()").get())
+    current_market_value_link = self.safe_strip(response.xpath("//div[@class='current-value svelte-18lvpom']/a/text()").get())
     if current_market_value_text: # sometimes the actual value is in the same level (https://www.transfermarkt.co.uk/femi-seriki/profil/spieler/638649)
       attributes['current_market_value'] = current_market_value_text
     else: # sometimes is one level down (https://www.transfermarkt.co.uk/rhys-norrington-davies/profil/spieler/543164)
       attributes['current_market_value'] = current_market_value_link
-    attributes['highest_market_value'] = self.safe_strip(response.xpath("//div[@class='tm-player-market-value-development__max-value']/text()").get())
+    attributes['highest_market_value'] = self.safe_strip(response.xpath("//div[@class='max-value svelte-18lvpom']/text()").get())
 
     social_media_value_node = response.xpath("//span[text()='Social-Media:']/following::span[1]")
     if len(social_media_value_node) > 0:
@@ -121,7 +121,7 @@ class PlayersSpider(BaseSpider):
     """
     Parse player's market history from the graph
     """
-    pattern = re.compile('\'data\'\:.*\}\}]')
+    pattern = re.compile("\\'data\\'\\:.*\\}\\}]")
 
     try:
       parsed_script = json.loads(

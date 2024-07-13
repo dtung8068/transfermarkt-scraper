@@ -5,7 +5,8 @@ import json
 
 from inflection import parameterize, underscore
 
-TYPES = ['First Tier', 'Second Tier', 'Third Tier', 'Fourth Tier', 'Fifth Tier', 'Sixth Tier']
+#TYPES = ['First Tier', 'Second Tier', 'Third Tier', 'Fourth Tier', 'Fifth Tier', 'Sixth Tier']
+TYPES = ['First Tier']
 
 class CompetitionsSpider(BaseSpider):
 
